@@ -20,4 +20,17 @@ public class ContractRepository {
         upsert contracts;
         return contracts;
     }
+
+    public List<Contract> save ( List<Contract> contracts, Schema.SObjectField field ) {
+        
+        Database.upsert( contracts, field );
+        return contracts;
+    }
+
+    public Contract save (Contract contract) {
+
+        upsert contract;
+        return contract;
+    }
+
 }
