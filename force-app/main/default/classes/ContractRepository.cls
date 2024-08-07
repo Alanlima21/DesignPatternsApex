@@ -1,4 +1,13 @@
-public class ContractRepository {
+public class ContractRepository  extends AbstractRepository {
+   
+    public List<AggregateResult> findTotalOfPendingContracts (List<String> accountIds ) {
+        return [ SELECT COUNT (Id) total, AccountId
+            FROM Contract
+            WHERE AccountId IN :accountIds
+            AND Status NOT IN ('Assinado', 'Inativado')
+            GROUP BY AccountId];
+    }
+    
     
     public List<Contract> findByIds(List<String> ids){
 
@@ -14,23 +23,4 @@ public class ContractRepository {
                 WHERE AccountId =: accountId
                 AND Status =: status];
     }
-
-    public List<Contract> save(List<Contract> contracts){
-
-        upsert contracts;
-        return contracts;
-    }
-
-    public List<Contract> save ( List<Contract> contracts, Schema.SObjectField field ) {
-        
-        Database.upsert( contracts, field );
-        return contracts;
-    }
-
-    public Contract save (Contract contract) {
-
-        upsert contract;
-        return contract;
-    }
-
 }
